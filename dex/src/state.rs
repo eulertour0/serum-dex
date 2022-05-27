@@ -582,7 +582,7 @@ impl MarketState {
 }
 
 #[repr(packed)]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 #[cfg_attr(feature = "fuzz", derive(Debug))]
 pub struct OpenOrders {
     pub account_flags: u64, // Initialized, OpenOrders
