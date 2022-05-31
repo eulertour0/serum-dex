@@ -998,3 +998,26 @@ mod tests {
         }
     }
 }
+
+impl Slab {
+    pub fn get_book(&self) -> Vec<(u64, u64)> {
+        fn rec<'a>(slab: &'a Slab, sub_root: NodeHandle, book: &mut Vec<(u64, u64)>) {
+            match slab.get(sub_root).unwrap().case().unwrap() {
+                NodeRef::Leaf(leaf) => {
+                    book.push((leaf.price().into(), leaf.quantity()));
+                }
+                NodeRef::Inner(inner) => {
+                    rec(slab, inner.children[0], book);
+                    rec(slab, inner.children[1], book);
+                }
+            }
+        }
+
+        
+        let mut book = vec![];
+        if let Some(root) = self.root() {
+            rec(self, root, &mut book);
+        }
+        book
+    }
+}
